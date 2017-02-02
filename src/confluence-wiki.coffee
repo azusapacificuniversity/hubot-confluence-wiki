@@ -68,7 +68,7 @@ module.exports = (robot) ->
       msg.send message
 
   robot.hear /(?:how do i|how do you) (.*)$/i, (msg) ->
-    search_term = msg.match[1].replace(/ (the |and |on |like |as |a )|\?|\,|\./g, ' ')
+    search_term = msg.match[1].replace(/\s(the |and |on |like |as |a )|\?|\,|\./g, ' ')
     confluence_request msg, "/rest/api/search?#{authsuffix}&cql=(type=page)#{searchspace}AND(text~'#{search_term}')&limit=#{confluence_heard_limit}", (result) ->
       if result.error
         msg.send result.description
