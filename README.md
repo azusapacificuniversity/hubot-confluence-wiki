@@ -21,11 +21,11 @@ Then add **hubot-confluence-wiki** to your `external-scripts.json`:
 ```
 user1>> hubot wiki supported programs
 hubot>> Showing 3 results: out of 20 - https://wiki.domain.com/dosearchsite.action?supported+programs
-	*Page1* https://wiki.apu.edu/x/tinyurl1
+	*Page1* https://wiki.domain.com/x/tinyurl1
 	><excerpt from page>
-	*Page2* https://wiki.apu.edu/x/tinyurl2
+	*Page2* https://wiki.domain.com/x/tinyurl2
 	><excerpt from page>
-	*Page3* https://wiki.apu.edu/x/tinyurl3
+	*Page3* https://wiki.domain.com/x/tinyurl3
 	><excerpt from page>
 
 ```
