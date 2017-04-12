@@ -1,7 +1,7 @@
 {
   "name": "hubot-confluence-wiki",
   "description": "Confluence/Wiki searches",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "author": "ParadoxGuitarist <briancmonroe@gmail.com>",
   "license": "MIT",
 

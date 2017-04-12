@@ -59,7 +59,7 @@ module.exports = (robot) ->
 
   robot.respond /wiki (.*)$/i, (msg) ->
     search_term = msg.match[1]
-    confluence_request msg, "/rest/api/search?#{authsuffix}&cql=(type=page)#{searchspace}AND(title~'#{search_term}')&limit=#{confluence_search_limit}", (result) ->
+    confluence_request msg, "/rest/api/search?#{authsuffix}&cql=(type=page)#{searchspace}AND(text~'#{search_term}')&limit=#{confluence_search_limit}", (result) ->
       if result.error
         msg.send result.description
         return
