@@ -32,6 +32,7 @@ confluence_search_limit = process.env.HUBOT_CONFLUENCE_SEARCH_LIMIT or '5'
 confluence_heard_limit = process.env.HUBOT_CONFLUENCE_HEARD_LIMIT or '3'
 confluence_highlight = process.env.HUBOT_CONFLUENCE_HIGHLIGHT_MARKDOWN_REPLACEMENT or ''
 confluence_search_space = process.env.HUBOT_CONFLUENCE_SEARCH_SPACE or ''
+hellip = "[...]"
 
 searchspace =
   if confluence_search_space == ''
@@ -64,7 +65,9 @@ module.exports = (robot) ->
         msg.send result.description
         return
       message = "Showing #{result.size} results: out of #{result.totalSize} - #{result._links.base}/dosearchsite.action?cql=#{result.cqlQuery.replace /(\s)/g, '+'}"
-      message += "\n*#{i.content.title}* #{ConfluenceBaseURL}#{i.content._links.tinyui}\n>#{i.excerpt.replace /@@@hl@@@|@@@endhl@@@/g, confluence_highlight}" for i in result.results
+      message += "\n*#{i.content.title}* #{ConfluenceBaseURL}#{i.content._links.tinyui}\n>#{i.excerpt}" for i in result.results
+      message = message.replace /@@@hl@@@|@@@endhl@@@/g, confluence_highlight
+      message = message.replace /&hellip;/g, hellip	
       msg.send message
 
   robot.hear /(?:how do i|how do you) (.*)$/i, (msg) ->
@@ -77,6 +80,8 @@ module.exports = (robot) ->
         msg.send "Perhaps you should try this: http://lmgtfy.com/?q=#{search_term.replace /\s/g, '+'}"
         return
       message = "Not sure I know how to do that, but this might help:"
-      message += "\n*#{i.content.title}* #{ConfluenceBaseURL}#{i.content._links.tinyui}\n>#{i.excerpt.replace /@@@hl@@@|@@@endhl@@@/g, confluence_highlight}" for i in result.results
+      message += "\n*#{i.content.title}* #{ConfluenceBaseURL}#{i.content._links.tinyui}\n>#{i.excerpt}" for i in result.results
+      message = message.replace /@@@hl@@@|@@@endhl@@@/g, confluence_highlight
+      message = message.replace /&hellip;/g, hellip
       message += "\n_You could always try searches here:_ http://lmgtfy.com/?q=#{search_term.replace /(\s)/g, '+'} #{result._links.base}/dosearchsite.action?cql=#{result.cqlQuery.replace /(\s)/g, '+'}_"
       msg.send message
