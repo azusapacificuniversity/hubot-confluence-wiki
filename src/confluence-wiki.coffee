@@ -64,10 +64,12 @@ module.exports = (robot) ->
       if result.error
         msg.send result.description
         return
-      message = "Showing #{result.size} results: out of #{result.totalSize} - #{result._links.base}/dosearchsite.action?cql=#{result.cqlQuery.replace /(\s)/g, '+'}"
-      message += "\n*#{i.content.title}* #{ConfluenceBaseURL}#{i.content._links.tinyui}\n>#{i.excerpt}" for i in result.results
+      message = "Showing #{result.size} results <#{result._links.base}/dosearchsite.action?cql=#{result.cqlQuery.replace /(\s)/g, '+'}|out of #{result.totalSize} total>"
+      message += "\n<#{ConfluenceBaseURL}#{i.content._links.tinyui}|#{i.content.title}> \n>#{i.excerpt}" for i in result.results
       message = message.replace /@@@hl@@@|@@@endhl@@@/g, confluence_highlight
-      message = message.replace /&hellip;/g, hellip	
+      message = message.replace /&hellip;/g, hellip
+      message = message.replace /&#39;/g, "'"
+      message = message.replace /&quot;/g, '"'
       msg.send message
 
   robot.hear /(?:how do i|how do you) (.*)$/i, (msg) ->
@@ -77,11 +79,13 @@ module.exports = (robot) ->
         msg.send result.description
         return
       if result.size == '0'
-        msg.send "Perhaps you should try this: http://lmgtfy.com/?q=#{search_term.replace /\s/g, '+'}"
+        msg.send "Perhaps you could try: <http://lmgtfy.com/?q=#{search_term.replace /\s/g, '+'}|a google search>"
         return
       message = "Not sure I know how to do that, but this might help:"
-      message += "\n*#{i.content.title}* #{ConfluenceBaseURL}#{i.content._links.tinyui}\n>#{i.excerpt}" for i in result.results
+      message += "\n<#{ConfluenceBaseURL}#{i.content._links.tinyui}|#{i.content.title}>\n>#{i.excerpt}" for i in result.results
       message = message.replace /@@@hl@@@|@@@endhl@@@/g, confluence_highlight
       message = message.replace /&hellip;/g, hellip
-      message += "\n_You could always try searches here:_ http://lmgtfy.com/?q=#{search_term.replace /(\s)/g, '+'} #{result._links.base}/dosearchsite.action?cql=#{result.cqlQuery.replace /(\s)/g, '+'}_"
+      message = message.replace /&#39;/g, "'"
+      message = message.replace /&quot;/g, '"'
+      message += "\n_You could always try searches here:_ <http://lmgtfy.com/?q=#{search_term.replace /(\s)/g, '+'}|google> or <#{result._links.base}/dosearchsite.action?cql=#{result.cqlQuery.replace /(\s)/g, '+'}|wiki> "
       msg.send message
